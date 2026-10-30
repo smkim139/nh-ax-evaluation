@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="robots" content="noindex, nofollow">
+    <title>NH x AgileSoDA | AI Agent MVP 심사위원 평가 포털</title>
+    <!-- Google Fonts: Noto Sans KR -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0052A5;      /* NH 농협 브랜드 블루 */
+            --primary-dark: #003770;
+            --secondary: #00A859;    /* NH 농협 그린 */
+            --accent: #FF6B00;       /* 포인트 오렌지 */
+            --bg-body: #F4F6F9;
+            --bg-card: #FFFFFF;
+            --text-main: #191F28;
+            --text-sub: #4E5968;
+            --text-muted: #8B95A1;
+            --border: #E5E8EB;
+            --radius-lg: 16px;
+            --radius-md: 12px;
+            --radius-sm: 8px;
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
+            --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.08);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            line-height: 1.5;
+            padding-bottom: 40px;
+        }
+
+        /* Header / Banner */
+        header {
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 60%, var(--secondary) 100%);
+            color: #FFFFFF;
+            padding: 28px 20px 24px;
+            text-align: center;
+            border-bottom-left-radius: 24px;
+            border-bottom-right-radius: 24px;
+            box-shadow: var(--shadow-md);
+        }
+
+        header .badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(4px);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            margin-bottom: 10px;
+        }
+
+        header h1 {
+            font-size: 22px;
+            font-weight: 800;
+            line-height: 1.35;
+            word-break: keep-all;
+        }
+
+        /* Container */
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 0 16px;
+        }
+
+        /* Section Title */
+        .section-header {
+            margin: 24px 0 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .section-title {
+            font-size: 17px;
+            font-weight: 700;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Category Header */
+        .category-header {
+            margin: 20px 0 10px;
+            padding: 8px 12px;
+            background: #EBF3FA;
+            border-left: 4px solid var(--primary);
+            border-radius: 4px;
+            font-size: 14.5px;
+            font-weight: 700;
+            color: var(--primary-dark);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Evaluation Notice Card */
+        .info-card {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border);
+            margin-top: 16px;
+        }
+
+        .info-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            font-size: 13.5px;
+        }
+
+        .info-label {
+            font-weight: 700;
+            color: var(--primary);
+            min-width: 75px;
+            flex-shrink: 0;
+        }
+
+        .info-value {
+            color: var(--text-sub);
+            word-break: keep-all;
+        }
+
+        .highlight-text {
+            color: #D9381E;
+            font-weight: 700;
+        }
+
+        /* Task Cards */
+        .task-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .task-card {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            padding: 18px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .task-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 8px;
+        }
+
+        .task-num {
+            background: var(--primary);
+            color: #FFFFFF;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 12px;
+        }
+
+        .task-category-tag {
+            background: #F1F5F9;
+            color: var(--primary-dark);
+            font-size: 11px;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 4px;
+            border: 1px solid #CBD5E1;
+        }
+
+        .task-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 8px;
+            line-height: 1.35;
+        }
+
+        .task-desc {
+            font-size: 13px;
+            color: var(--text-sub);
+            margin-bottom: 12px;
+            line-height: 1.45;
+            word-break: keep-all;
+        }
+
+        .task-meta {
+            background: #F8F9FA;
+            padding: 10px 12px;
+            border-radius: var(--radius-sm);
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .task-meta span strong {
+            color: var(--text-sub);
+        }
+
+        .task-actions {
+            display: flex;
+            gap: 6px;
+        }
+
+        .btn-action {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 3px;
+            padding: 10px 0;
+            border-radius: var(--radius-sm);
+            font-size: 12px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: opacity 0.2s;
+            white-space: nowrap;
+        }
+
+        .btn-detail {
+            background: #FFFFFF;
+            color: var(--text-main);
+            border: 1px solid #CBD5E1;
+        }
+
+        .btn-video {
+            background: #F1F5F9;
+            color: var(--primary-dark);
+            border: 1px solid #B8D5E5;
+        }
+
+        .btn-eval {
+            background: var(--primary);
+            color: #FFFFFF;
+            box-shadow: 0 2px 4px rgba(0, 82, 167, 0.2);
+        }
+
+        .btn-action:active {
+            opacity: 0.85;
+        }
+
+        /* Footer */
+        footer {
+            margin-top: 36px;
+            text-align: center;
+            padding: 20px;
+            font-size: 11.5px;
+            color: var(--text-muted);
+            border-top: 1px solid var(--border);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <span class="badge">NH x AgileSoDA</span>
+        <h1>AI Agent MVP 심사위원 평가 포털</h1>
+    </header>
+
+    <div class="container">
+
+        <!-- Evaluation Overview & Notice -->
+        <div class="info-card">
+            <div class="section-title" style="margin-bottom: 12px;">
+                📌 심사위원 평가 안내
+            </div>
+            <div class="info-grid">
+                <div class="info-item">
+                    <span class="info-label">평가 기간</span>
+                    <span class="info-value highlight-text">2026. 11. 4.(수) ~ 11. 6.(금) 23:59까지</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">평가 대상</span>
+                    <span class="info-value">10대 AI Agent MVP 과제 전체</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">평가 방법</span>
+                    <span class="info-value">과제별 세부내용/시연영상을 확인 후 [📝 평가하기] 버튼을 통해 구글 설문지로 점수를 제출해 주세요.</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">유의 사항</span>
+                    <span class="info-value">구글 계정 로그인 상태에서 응답하시면 평가 기간 내에 자유롭게 수정 및 재제출이 가능합니다.</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Task Section -->
+        <div class="section-header">
+            <div class="section-title">
+                🤖 10대 AI Agent MVP 평가 대상 과제
+            </div>
+        </div>
+
+        <div class="task-list">
+
+            <!-- Category 1 -->
+            <div class="category-header">
+                📄 문서분석·작성 (1 ~ 4)
+            </div>
+
+            <!-- Task 1 -->
+            <div class="task-card">
+                <div class="task-header">
+                    <span class="task-num">과제 01</span>
+                    <span class="task-category-tag">문서분석·작성</span>
+                </div>
+                <div class="task-title">PF AI Agent</div>
+                <div class="task-desc">부동산PF 사업성 조사분석서 작성 및 대출약정서 검토를 자동화하는 Agent</div>
+                <div class="task-meta">
+                    <span><strong>사용 기술:</strong> LLM, rule-based</span>
+                    <span><strong>담당 부서:</strong> 프로젝트금융부, 투자금융솔루션단</span>
+                </div>
+                <div class="task-actions">
+                    <a href="task01.html" class="btn-action btn-detail">🔍 세부페이지</a>
+                    <a href="#" class="btn-action btn-video" onclick="alert('1번 과제 시연 영상 링크가 들어갈 자리입니다.'); return false;">🎥 영상 확인</a>
+                    <a href="https://forms.gle/4VdZ86J1CidfvVSc9" target="_blank" class="btn-action btn-eval">📝 평가하기</a>
+                </div>
+            </div>
+
+            <!-- Task 2 -->
+            <div class="task-card">
+                <div class="task-header">
+                    <span class="task-num">과제 02</span>
+                    <span class="task-category-tag">문서분석·작성</span>
+                </div>
+                <div class="task-title">투자자산 매매내역 자동처리</div>
+                <div class="task-desc">원화유가증권 매매 서류(매매내역, 운용계획서 등)를 자동으로 처리하고 계리하는 Agent</div>
+                <div class="task-meta">
+                    <span><strong>사용 기술:</strong> LLM, AI-OCR</span>
+                    <span><strong>담당 부서:</strong> 자금부, 투자금융솔루션단</span>
+                </div>
+                <div class="task-actions">
+                    <a href="task02.html" class="btn-action btn-detail">🔍 세부페이지</a>
+                    <a href="#" class="btn-action btn-video" onclick="alert('2번 과제 시연 영상 링크가 들어갈 자리입니다.'); return false;">🎥 영상 확인</a>
+                    <a href="https://forms.gle/3KawGqD1LY6T88gWA" target="_blank" class="btn-action btn-eval">📝 평가하기</a>
+                </div>
+            </div>
+
+            <!-- Task 3 -->
+            <div class="task-card">
+                <div class="task-header">
+                    <span class="task-num">과제 03</span>
+                    <span class="task-category-tag">문서분석·작성</span>
+                </div>
+                <div class="task-title">OA 업무 도우미</div>
+                <div class="task-desc">영업점과 본부 OA 모두를 위한- 질의응답부터 업무처리까지 가능한 One-Stop Agent</div>
+                <div class="task-meta">
+                    <span><strong>사용 기술:</strong> LLM, RAG, API</span>
+                    <span><strong>담당 부서:</strong> 프로세스혁신부, 테크기획부</span>
+                </div>
+                <div class="task-actions">
+                    <a href="task03.html" class="btn-action btn-detail">🔍 세부페이지</a>
+                    <a href="#" class="btn-action btn-video" onclick="alert('3번 과제 시연 영상 링크가 들어갈 자리입니다.'); return false;">🎥 영상 확인</a>
+                    <a href="https://forms.gle/vchoK4mPnAcsGKtTA" target="_blank" class="btn-action btn-eval">📝 평가하기</a>
+                </div>
+            </div>
+
+            <!-- Task 4 -->
+            <div class="task-card">
+                <div class="task-header">
+                    <span class="task-num">과제 04</span>
+                    <span class="task-category-tag">문서분석·작성</span>
+                </div>
+                <div class="task-title">마케팅허브 메시지 AI Agent</div>
+                <div class="task-desc">대고객 메시지 검색부터 추천, 내부통제까지 자동화하는 Agent</div>
+                <div class="task-meta">
+                    <span><strong>사용 기술:</strong> LLM, rule-based, RAG</span>
+                    <span><strong>담당 부서:</strong> 개인고객부, 데이터솔루션부</span>
+                </div>
+                <div class="task-actions">
+                    <a href="task04.html" class="btn-action btn-detail">🔍 세부페이지</a>
+                    <a href="#" class="btn-action btn-video" onclick="alert('4번 과제 시연 영상 링크가 들어갈 자리입니다.'); return false;">🎥 영상 확인</a>
+                    <a href="https://forms.gle/kFh5uFyY8coX8dbo8" target="_blank" class="btn-action btn-eval">📝 평가하기</a>
+                </div>
+            </div>
+
+            <!-- Category 2 -->
+            <div class="category-header">
+                🛡️ 검증·내부통제 및 검색·업무지원 (5 ~ 7)
+            </div>
+
+            <!-- Task 5 -->
+            <div class="task-card">
+                <div class="task-header">
+                    <span class="task-num">과제 05</span>
+                    <span class="task-category-tag">검증·내부통제</span>
+                </div>
+                <div class="task-title">여신 사고 제로</div>
+                <div class="task-desc">여신 규정 기반 기업대출 서류 검토 및 오류 발견 Agent</div>
+                <div class="task-meta">
+                    <span><strong>사용 기술:</strong> AI-OCR, RAG, MCP, LLM</span>
+                    <span><strong>담당 부서:</strong> 감사부, 테크기획부</span>
+                </div>
+                <div class="task-actions">
+                    <a href="task05.html" class="btn-action btn-detail">🔍 세부페이지</a>
+                    <a href="#" class="btn-action btn-video" onclick="alert('5번 과제 시연 영상 링크가 들어갈 자리입니다.'); return false;">🎥 영상 확인</a>
+                    <a href="https://forms.gle/GFd7WSuxDU5TEbP99" target="_blank" class="btn-action btn-eval">📝 평가하기</a>
+                </div>
+            </div>
+
+            <!-- Task 6 -->
+            <div class="task-card">
+                <div class="task-header">
+                    <span class="task-num">과제 06</span>
+                    <span class="task-category-tag">검증·내부통제</span>
+                </div>
+                <div class="task-title">요주의인물 필터링 AI Agent</div>
+                <div class="task-desc">제재대상자 금융거래 방지를 위해 내부통제는 강화하고, 직원 업무부담은 줄인 Agent</div>
+                <div class="task-meta">
+                    <span><strong>사용 기술:</strong> LLM</span>
+                    <span><strong>담당 부서:</strong> 자금세탁방지부, 투자금융솔루션단</span>
+                </div>
+                <div class="task-actions">
+                    <a href="task06.html" class="btn-action btn-detail">🔍 세부페이지</a>
+                    <a href="#" class="btn-action btn-video" onclick="alert('6번 과제 시연 영상 링크가 들어갈 자리입니다.'); return false;">🎥 영상 확인</a>
+                    <a href="https://forms.gle/Bg6LZVMH1Aofeh2t9" target="_blank" class="btn-action btn-eval">📝 평가하기</a>
+                </div>
+            </div>
+
+            <!-- Task 7 -->
+            <div class="task-card">
+                <div class="task-header">
+                    <span class="task-num">과제 07</span>
+                    <span class="task-category-tag">검증·내부통제</span>
+                </div>
+                <div class="task-title">당발송금 중계 AI Agent</div>
+                <div class="task-desc">더 빠르고 정확한 해외송금 서비스를 위해 송금전문을 자동 검증하는 Agent</div>
+                <div class="task-meta">
+                    <span><strong>사용 기술:</strong> AI-OCR, rule-based</span>
+                    <span><strong>담당 부서:</strong> 외환지원센터, 금융솔루션부</span>
+                </div>
+                <div class="task-actions">
+                    <a href="task07.html" class="btn-action btn-detail">🔍 세부페이지</a>
+                    <a href="#" class="btn-action btn-video" onclick="alert('7번 과제 시연 영상 링크가 들어갈 자리입니다.'); return false;">🎥 영상 확인</a>
+                    <a href="https://forms.gle/AdiCfCrcjPHDQArG8" target="_blank" class="btn-action btn-eval">📝 평가하기</a>
+                </div>
+            </div>
+
+            <!-- Category 3 -->
+            <div class="category-header">
+                ⚙️ 업무처리·추진 (8 ~ 10)
+            </div>
+
+            <!-- Task 8 -->
+            <div class="task-card">
+                <div class="task-header">
+                    <span class="task-num">과제 08</span>
+                    <span class="task-category-tag">업무처리·추진</span>
+                </div>
+                <div class="task-title">카드 상품추천 Agent</div>
+                <div class="task-desc">고객이 묻기 전에, "이유"와 "금액"으로 먼저 답하는 카드 상품 추천 Agent</div>
+                <div class="task-meta">
+                    <span><strong>사용 기술:</strong> LLM, ML, rule-based</span>
+                    <span><strong>담당 부서:</strong> 카드디지털사업부, 카드솔루션단</span>
+                </div>
+                <div class="task-actions">
+                    <a href="task08.html" class="btn-action btn-detail">🔍 세부페이지</a>
+                    <a href="#" class="btn-action btn-video" onclick="alert('8번 과제 시연 영상 링크가 들어갈 자리입니다.'); return false;">🎥 영상 확인</a>
+                    <a href="https://forms.gle/kvSnFcmaKeY6GXd1A" target="_blank" class="btn-action btn-eval">📝 평가하기</a>
+                </div>
+            </div>
+
+            <!-- Task 9 -->
+            <div class="task-card">
+                <div class="task-header">
+                    <span class="task-num">과제 09</span>
+                    <span class="task-category-tag">업무처리·추진</span>
+                </div>
+                <div class="task-title">카드 AI Agentic 챗봇</div>
+                <div class="task-desc">일상적 대화를 통해 카드 이용내역을 찾아주고 금융업무를 처리하는 Agent</div>
+                <div class="task-meta">
+                    <span><strong>사용 기술:</strong> LLM, Rule-Based, ML, NLP/NLU</span>
+                    <span><strong>담당 부서:</strong> 고객행복센터, 카드솔루션단</span>
+                </div>
+                <div class="task-actions">
+                    <a href="task09.html" class="btn-action btn-detail">🔍 세부페이지</a>
+                    <a href="#" class="btn-action btn-video" onclick="alert('9번 과제 시연 영상 링크가 들어갈 자리입니다.'); return false;">🎥 영상 확인</a>
+                    <a href="https://forms.gle/iMHv3zrJRX23u1QZ8" target="_blank" class="btn-action btn-eval">📝 평가하기</a>
+                </div>
+            </div>
+
+            <!-- Task 10 -->
+            <div class="task-card">
+                <div class="task-header">
+                    <span class="task-num">과제 10</span>
+                    <span class="task-category-tag">업무처리·추진</span>
+                </div>
+                <div class="task-title">기업e금융 One-Stop Agent</div>
+                <div class="task-desc">기업의 금융거래패턴을 기반으로 가망고객, 추천근거 및 영업멘트를 제공하는 Agent</div>
+                <div class="task-meta">
+                    <span><strong>사용 기술:</strong> LLM, rule-based</span>
+                    <span><strong>담당 부서:</strong> 기업플랫폼부, 데이터솔루션부</span>
+                </div>
+                <div class="task-actions">
+                    <a href="task10.html" class="btn-action btn-detail">🔍 세부페이지</a>
+                    <a href="#" class="btn-action btn-video" onclick="alert('10번 과제 시연 영상 링크가 들어갈 자리입니다.'); return false;">🎥 영상 확인</a>
+                    <a href="https://forms.gle/vyX98971234567890" target="_blank" class="btn-action btn-eval">📝 평가하기</a>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>본 페이지는 AI Agent MVP 과제 평가 심사위원 내부 안내용입니다.</p>
+    </footer>
+
+</body>
+</html>
